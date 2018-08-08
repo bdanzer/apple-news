@@ -81,7 +81,7 @@ function apple_news_get_plugin_data() {
 	return get_plugin_data( plugin_dir_path( __FILE__ ) . '/apple-news.php' );
 }
 
-new Admin_Apple_News();
+$Admin_Apple_News = new Admin_Apple_News();
 
 /**
  * Reports whether an export is currently happening.
