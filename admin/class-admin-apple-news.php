@@ -38,7 +38,7 @@ class Admin_Apple_News extends Apple_News {
 	public function __construct() {
 		// Register hooks.
 		add_action( 'admin_print_styles-toplevel_page_apple_news_index', array( $this, 'plugin_styles' ) );
-		add_action( 'init', array( $this, 'add_image_sizes' ) );
+		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 
 		/**
 		 * Admin_Settings builds the settings page for the plugin. Besides setting
