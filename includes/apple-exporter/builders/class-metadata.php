@@ -142,34 +142,40 @@ class Metadata extends Builder {
 
 			// Try to get information about the specified image.
 			$image_id = $ca_meta[ $key ];
-			$image = wp_get_attachment_metadata( $image_id );
 			$alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
-			if ( empty( $image['sizes'] ) ) {
-				continue;
-			}
+			$override_url = apply_filters('pre_add_json_cover_art', null, $image_id, $key, $data);
 
-			// Skip images that don't meet the minimum size requirements.
-			if ( empty( $image['sizes'][ $key ]['width'] )
-				|| empty( $image['sizes'][ $key ]['height'] )
-				|| $data['width'] !== $image['sizes'][ $key ]['width']
-				|| $data['height'] !== $image['sizes'][ $key ]['height']
-			) {
-				/**
-				 * If the full size of the image is *exactly* the requested
-				 * dimensions, a crop won't be generated, but we don't want
-				 * to fail it either. So we need to check the height and
-				 * width of the original also.
-				 */
-				if ( $data['width'] !== $image['width']
-					|| $data['height'] !== $image['height']
-				) {
+			if (null === $override_url) {
+				$image = wp_get_attachment_image( $image_id );
+				if ( empty( $image['sizes'] ) ) {
 					continue;
 				}
-			}
 
-			// Bundle source, if necessary.
-			$url = wp_get_attachment_image_url( $image_id, $key );
-			$url = $this->maybe_bundle_source( $url );
+				// Skip images that don't meet the minimum size requirements.
+				if ( empty( $image['sizes'][ $key ]['width'] )
+					|| empty( $image['sizes'][ $key ]['height'] )
+					|| $data['width'] !== $image['sizes'][ $key ]['width']
+					|| $data['height'] !== $image['sizes'][ $key ]['height']
+				) {
+					/**
+					 * If the full size of the image is *exactly* the requested
+					 * dimensions, a crop won't be generated, but we don't want
+					 * to fail it either. So we need to check the height and
+					 * width of the original also.
+					 */
+					if ( $data['width'] !== $image['width']
+						|| $data['height'] !== $image['height']
+					) {
+						continue;
+					}
+				}
+
+				// Bundle source, if necessary.
+				$url = wp_get_attachment_image_url( $image_id, $key );
+				$url = $this->maybe_bundle_source( $url );	
+			} else {
+				$url = $override_url;
+			}
 
 			// Add this crop to the coverArt array.
 			$meta['coverArt'][] = array(
