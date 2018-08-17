@@ -1,7 +1,5 @@
 {
   "name"       : "multiply/apple-news",
-  "description": "Enable your WordPress blog content to be published to your Apple News channel.",
-  "homepage"   : "https://github.com/alleyinteractive/apple-news",
   "type"       : "wordpress-plugin",
   "license"    : "GPL-3.0+",
   "require"    : {
