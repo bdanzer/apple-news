@@ -1,5 +1,5 @@
 {
-  "name"       : "multiply/apple-news",
+  "name"       : "multiply/publish-to-apple-news",
   "description": "Enable your WordPress blog content to be published to your Apple News channel.",
   "homepage"   : "https://multiply.com",
   "type"       : "wordpress-plugin",
