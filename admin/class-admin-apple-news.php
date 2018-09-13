@@ -38,6 +38,7 @@ class Admin_Apple_News extends Apple_News {
 	public function __construct() {
 		// Register hooks.
 		add_action( 'admin_print_styles-toplevel_page_apple_news_index', array( $this, 'plugin_styles' ) );
+		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 
 		/**
 		 * Admin_Settings builds the settings page for the plugin. Besides setting
@@ -209,6 +210,22 @@ class Admin_Apple_News extends Apple_News {
 			. esc_html( $message )
 			. '</p></div>';
 	}
+
+	/**
+	 * Actions to be run on the `init` action hook.
+	 *
+	 * @access public
+	 */
+	public function add_image_sizes() {
+		// Register custom image crops.
+		if ( 'yes' === self::$settings->enable_cover_art ) {
+			$image_sizes = self::get_image_sizes();
+			foreach ( $image_sizes as $name => $data ) {
+				add_image_size( $name, $data['width'], $data['height'], true );
+			}
+		}
+	}
+
 
 	/**
 	 * Implements certain plugin styles inline.
